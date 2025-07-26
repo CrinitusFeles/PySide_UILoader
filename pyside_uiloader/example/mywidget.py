@@ -1,23 +1,3 @@
-# PySide_UILoader
-PySide6 dynamic ui loader similar to `uic.loadUi` from PyQt. This approach allows you make subclasses from UI widget without creating extra attribute.
-
-# Installation
-
-```sh
-uv add git+https://github.com/CrinitusFeles/PySide_UILoader
-```
-or
-```sh
-pip install git+https://github.com/CrinitusFeles/PySide_UILoader
-```
-
-# Using
-
-You can use `loadUi` function like in PyQt but without automatic slot connection by name. All slots will have to connect _manually_.
-
-Example from `pyside_uiloader/example/mywidget.py`
-
-```python
 from pathlib import Path
 from PySide6 import QtWidgets
 from pyside_uiloader import loadUi
@@ -30,7 +10,7 @@ class MyWidget(QtWidgets.QWidget):
     def __init__(self) -> None:
         super().__init__()
         loadUi(Path(__file__).parent / 'mywidget.ui', self)
-        self.add_button.pressed.connect(self.on_add_button_pressed)
+        # self.add_button.pressed.connect(self.on_add_button_pressed)
 
     def on_add_button_pressed(self) -> None:
         button_name: str = self.button_name_line_edit.text()
@@ -45,6 +25,3 @@ if __name__ == '__main__':
     w = MyWidget()
     w.show()
     app.exec()
-```
-
-![Example UI](./assets/example.png "Example UI")
