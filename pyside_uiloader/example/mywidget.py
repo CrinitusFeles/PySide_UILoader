@@ -10,7 +10,7 @@ class MyWidget(QtWidgets.QWidget):
     def __init__(self) -> None:
         super().__init__()
         loadUi(Path(__file__).parent / 'mywidget.ui', self)
-        # self.add_button.pressed.connect(self.on_add_button_pressed)
+        self.add_button.pressed.connect(self.on_add_button_pressed)
 
     def on_add_button_pressed(self) -> None:
         button_name: str = self.button_name_line_edit.text()

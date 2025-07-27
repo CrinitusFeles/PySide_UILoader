@@ -2,15 +2,15 @@ from pathlib import Path
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtUiTools import QUiLoader
 
-
 widgets_tree: dict = {}
-
+widgets = set()
 
 def save_attr(root_widget: QtCore.QObject, object_name: str,
               obj: QtCore.QObject,
               object_parent: QtCore.QObject):
     setattr(root_widget, object_name, obj)
-    print(f'"{object_name}": {type(obj)} {object_parent}')
+    widgets.add(obj)
+    # print(f'"{object_name}": {type(obj)} {object_parent}')
     # return {object_parent.objectName(): object_name}
 
 
@@ -21,7 +21,7 @@ CONTAINERS = (
 
 def extract_from_container(parent: QtCore.QObject, container: CONTAINERS):
     if isinstance(container, QtWidgets.QTabWidget):
-        count = container.tabBar().count()
+        count: int = container.tabBar().count()
     else:
         count = container.count()
     for i in range(count):
@@ -33,17 +33,17 @@ def extract_from_container(parent: QtCore.QObject, container: CONTAINERS):
         else:
             children = tab.children()
             for child in children:
+                save_attr(parent, child.objectName(), child, child.parent())
                 if isinstance(child, CONTAINERS):
                     extract_from_container(parent, child)
                 elif isinstance(child, QtWidgets.QLayout):
                     extract_widgets(parent, child)
                 elif isinstance(child, QtWidgets.QWidget):
-                    save_attr(parent, child.objectName(), child, child.parent())
                     child_layout: QtWidgets.QLayout | None = child.layout()
                     if child_layout:
                         extract_widgets(parent, child_layout)
                 else:
-                    save_attr(parent, child.objectName(), child, child.parent())
+                    ...
 
 
 def extract_widgets(parent: QtCore.QObject, layout: QtWidgets.QLayout) -> None:
