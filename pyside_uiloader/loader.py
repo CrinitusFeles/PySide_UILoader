@@ -13,7 +13,7 @@ def save_attr(root_widget: QtCore.QObject, object_name: str,
     setattr(root_widget, object_name, obj)
     if isinstance(obj, QtGui.QIcon):
         pass
-    print(f'"{object_name}": {type(obj)} {object_parent}')
+    # print(f'"{object_name}": {type(obj)} {object_parent}')
     # return {object_parent.objectName(): object_name}
 
 
