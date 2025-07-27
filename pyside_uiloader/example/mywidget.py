@@ -1,5 +1,6 @@
 from pathlib import Path
 from PySide6 import QtWidgets
+from PySide6.QtCore import Slot
 from pyside_uiloader import loadUi
 
 
@@ -10,8 +11,8 @@ class MyWidget(QtWidgets.QWidget):
     def __init__(self) -> None:
         super().__init__()
         loadUi(Path(__file__).parent / 'mywidget.ui', self)
-        self.add_button.pressed.connect(self.on_add_button_pressed)
 
+    @Slot()
     def on_add_button_pressed(self) -> None:
         button_name: str = self.button_name_line_edit.text()
         new_button = QtWidgets.QPushButton(button_name)

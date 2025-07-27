@@ -2,14 +2,13 @@ from pathlib import Path
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtUiTools import QUiLoader
 
-widgets_tree: dict = {}
-widgets = set()
+# widgets_tree: dict = {}
+# widgets = set()
 
 def save_attr(root_widget: QtCore.QObject, object_name: str,
               obj: QtCore.QObject,
               object_parent: QtCore.QObject):
     setattr(root_widget, object_name, obj)
-    widgets.add(obj)
     # print(f'"{object_name}": {type(obj)} {object_parent}')
     # return {object_parent.objectName(): object_name}
 

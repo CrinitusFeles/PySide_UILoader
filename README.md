@@ -13,13 +13,14 @@ pip install git+https://github.com/CrinitusFeles/PySide_UILoader
 
 # Using
 
-You can use `loadUi` function like in PyQt but without automatic slot connection by name. All slots will have to connect _manually_.
+You can use `loadUi` function like in PyQt with automatic slot connection by name.
 
 Example from `pyside_uiloader/example/mywidget.py`
 
 ```python
 from pathlib import Path
 from PySide6 import QtWidgets
+from PySide6.QtCore import Slot
 from pyside_uiloader import loadUi
 
 
@@ -30,8 +31,8 @@ class MyWidget(QtWidgets.QWidget):
     def __init__(self) -> None:
         super().__init__()
         loadUi(Path(__file__).parent / 'mywidget.ui', self)
-        self.add_button.pressed.connect(self.on_add_button_pressed)
 
+    @Slot()
     def on_add_button_pressed(self) -> None:
         button_name: str = self.button_name_line_edit.text()
         new_button = QtWidgets.QPushButton(button_name)
@@ -45,6 +46,7 @@ if __name__ == '__main__':
     w = MyWidget()
     w.show()
     app.exec()
+
 ```
 
 ![Example UI](./assets/example.png "Example UI")
