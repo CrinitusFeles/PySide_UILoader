@@ -1,15 +1,19 @@
+import os
 from pathlib import Path
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtUiTools import QUiLoader
 
 # widgets_tree: dict = {}
 # widgets = set()
 
+
 def save_attr(root_widget: QtCore.QObject, object_name: str,
               obj: QtCore.QObject,
               object_parent: QtCore.QObject):
     setattr(root_widget, object_name, obj)
-    # print(f'"{object_name}": {type(obj)} {object_parent}')
+    if isinstance(obj, QtGui.QIcon):
+        pass
+    print(f'"{object_name}": {type(obj)} {object_parent}')
     # return {object_parent.objectName(): object_name}
 
 
@@ -66,6 +70,9 @@ def extract_widgets(parent: QtCore.QObject, layout: QtWidgets.QLayout) -> None:
             elif widget_layout:
                 extract_widgets(parent, widget_layout)
             else:
+                # children = widget.children()
+                # for child in children:
+                #     print(child, child.parent())
                 ...
         else:  # QSpacerItem
             ...
@@ -73,7 +80,11 @@ def extract_widgets(parent: QtCore.QObject, layout: QtWidgets.QLayout) -> None:
 
 def loadUi(path: str | Path, parent: QtWidgets.QWidget) -> None:
     loader = QUiLoader()
+    p = Path(path)
+    cwd: Path = Path.cwd()
+    os.chdir(str(p.parent))
     w: QtWidgets.QWidget = loader.load(path)
+    os.chdir(str(cwd))
     parent.resize(w.size())
     layout: QtWidgets.QLayout | None = w.layout()
     if layout:
